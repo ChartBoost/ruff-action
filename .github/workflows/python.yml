@@ -1,0 +1,12 @@
+name: CheckPython
+
+on: [push, pull_request]
+
+jobs:
+  clean-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: psf/black@stable
+      - uses: chartboost/ruff-action@v0
+      - uses: jakebailey/pyright-action@v1
