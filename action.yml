@@ -1,10 +1,10 @@
 name: "Ruff GH Action"
 description: "A GH Action of Ruff, the extremely fast Python linter."
-author: "Austin Bennett and the Ruff Community"
+author: "The Ruff Community"
 inputs:
   args:
     description:
-      "Arguments passed to Ruff. Use `ruff --help` to see available options. 
+      "Arguments passed to Ruff. Use `ruff --help` to see available options.
       Default: 'check'"
     required: false
     default: "check"
