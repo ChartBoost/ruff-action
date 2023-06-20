@@ -32,7 +32,7 @@ can be included as a step in any other workflow file.
 The Ruff action can be customized via optional configuration parameters passed to Ruff (using `with:`):
 
 - version: Must be release available on PyPI. default, latest release of ruff. You can pin a version, or use any valid version specifier.
-- options: default,`check`
+- args: default,`check`
 - src: default, '.'
 
 ```yaml
