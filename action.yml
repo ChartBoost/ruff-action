@@ -29,7 +29,7 @@ runs:
           python3 $GITHUB_ACTION_PATH/action/main.py
         fi
       env:
-        RUFF_FORMAT: github
+        RUFF_OUTPUT_FORMAT: github
         INPUT_ARGS: ${{ inputs.args }}
         INPUT_SRC: ${{ inputs.src }}
         INPUT_VERSION: ${{ inputs.version }}
