@@ -5,7 +5,7 @@ on:
     paths:
     - '.github/workflows/**'
   pull_request:
-    paths: 
+    paths:
     - '.github/workflows/**'
 
 jobs:

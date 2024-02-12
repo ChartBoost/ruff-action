@@ -1,4 +1,5 @@
 """GitHub Action for Ruff."""
+
 import os
 import re
 import shlex
