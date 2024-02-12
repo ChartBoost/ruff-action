@@ -4,7 +4,7 @@ A GitHub Action for Ruff
 
 Ruff can now be used as a [GitHub Action](https://github.com/features/actions).
 
-This action is commonly used as a pass/fail test to ensure your repository stays clean, abiding the [Rules](https://beta.ruff.rs/docs/rules/) specified in your configuration.  Though it runs `ruff`, the action can do anything `ruff` can (ex, fix).
+This action is commonly used as a pass/fail test to ensure your repository stays clean, abiding the [Rules](https://docs.astral.sh/ruff/rules/) specified in your configuration.  Though it runs `ruff`, the action can do anything `ruff` can (ex, fix).
 
 Compatibility
 This action is known to support all GitHub-hosted runner OSes. In addition, only published versions of Ruff are supported (i.e. whatever is available on PyPI).
@@ -43,4 +43,4 @@ The Ruff action can be customized via optional configuration parameters passed t
     args: --select B
 ```
 
-See [Configuring Ruff](https://github.com/charliermarsh/ruff/blob/main/docs/configuration.md) for details
+See [Configuring Ruff](https://github.com/astral-sh/ruff/blob/main/docs/configuration.md) for details
