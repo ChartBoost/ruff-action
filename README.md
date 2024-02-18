@@ -39,7 +39,7 @@ The Ruff action can be customized via optional configuration parameters passed t
 - uses: chartboost/ruff-action@v1
   with:
     src: "./src"
-    version: 0.2.1
+    version: 0.2.2
     args: --select B
 ```
 
