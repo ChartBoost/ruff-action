@@ -16,7 +16,7 @@ jobs:
       issues: read
       pull-requests: write
     steps:
-    - uses: actions/stale@v7
+    - uses: actions/stale@v9
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         stale-pr-message: "This pull request has been marked as stale. It will be closed in 14 days if no further activity occurs."
