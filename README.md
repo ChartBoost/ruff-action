@@ -32,13 +32,15 @@ can be included as a step in any other workflow file.
 The Ruff action can be customized via optional configuration parameters passed to Ruff (using `with:`):
 
 - version: Must be a Ruff release available on PyPI. By default, latest release of Ruff. You can pin a version, or use any valid version specifier.
-- args: default, `check`
+- mode: 'check' or 'format', default, 'check'
+- args: default, ''
 - src: default, '.'
 
 ```yaml
 - uses: chartboost/ruff-action@v1
   with:
     src: "./src"
+    mode: "check"
     version: 0.2.2
     args: --select B
 ```

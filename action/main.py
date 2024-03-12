@@ -9,6 +9,7 @@ from subprocess import run
 
 ACTION_PATH = Path(os.environ["GITHUB_ACTION_PATH"])
 ARGS = os.getenv("INPUT_ARGS", default="")
+MODE = os.getenv("INPUT_MODE", default="")
 SRC = os.getenv("INPUT_SRC", default="")
 VERSION = os.getenv("INPUT_VERSION", default="")
 
@@ -21,6 +22,20 @@ if VERSION != "":
 
 req = f"ruff{version_specifier}"
 
-proc = run(["pipx", "run", req, *shlex.split(ARGS), *shlex.split(SRC)])
+command = (
+    ["pipx", "run", req, MODE, *shlex.split(ARGS), *shlex.split(SRC)]
+    if MODE == "check"
+    else [
+        "pipx",
+        "run",
+        req,
+        MODE,
+        "--check",
+        *shlex.split(ARGS),
+        *shlex.split(SRC),
+    ]
+)
+
+proc = run(command)
 
 sys.exit(proc.returncode)
