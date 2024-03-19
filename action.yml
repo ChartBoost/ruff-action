@@ -2,17 +2,12 @@ name: "Ruff GH Action"
 description: "A GH Action of Ruff, the extremely fast Python linter."
 author: "The Ruff Community"
 inputs:
-  mode:
-    description:
-      "Specify ruff mode 'check' or 'format'"
-    required: false
-    default: "check"
   args:
     description:
       "Arguments passed to Ruff. Use `ruff --help` to see available options.
-      Default: ''"
+      Default: 'check'"
     required: false
-    default: ""
+    default: "check"
   src:
     description: "Source to run ruff. Default: '.'"
     required: false
@@ -35,7 +30,6 @@ runs:
         fi
       env:
         RUFF_OUTPUT_FORMAT: github
-        INPUT_MODE: ${{ inputs.mode }}
         INPUT_ARGS: ${{ inputs.args }}
         INPUT_SRC: ${{ inputs.src }}
         INPUT_VERSION: ${{ inputs.version }}
