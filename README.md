@@ -7,7 +7,7 @@ Ruff can now be used as a [GitHub Action](https://github.com/features/actions).
 This action is commonly used as a pass/fail test to ensure your repository stays clean, abiding the [Rules](https://docs.astral.sh/ruff/rules/) specified in your configuration.  Though it runs `ruff`, the action can do anything `ruff` can (ex, fix).
 
 ## Compatibility
-This action is known to support all GitHub-hosted runner OSes. In addition, only published versions of Ruff are supported (i.e. whatever is available on PyPI).
+This action is known to support all GitHub-hosted runner OSes.  It likely can run on self-hosted runners, but might need specific dependencies. Only published versions of Ruff are supported (i.e. whatever is available on PyPI).
 
 ## Basic Usage
 Create a file (ex: `.github/workflows/ruff.yml`) inside your repository with:
