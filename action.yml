@@ -30,6 +30,8 @@ runs:
       id: changed-files
       if: ${{ inputs.changed-files == 'true' }}
       uses: tj-actions/changed-files@v44
+      with:
+        files: '**.py'
     - run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
           python $GITHUB_ACTION_PATH/action/main.py
