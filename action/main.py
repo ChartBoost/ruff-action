@@ -19,6 +19,9 @@ if VERSION != "":
         sys.exit(1)
     version_specifier = f"=={VERSION}"
 
+matcher_path = os.path.join(ACTION_PATH, "matchers", "*.json")
+print(f"::add-matcher::{matcher_path}")
+
 req = f"ruff{version_specifier}"
 
 proc = run(["pipx", "run", req, *shlex.split(ARGS), *shlex.split(SRC)])
