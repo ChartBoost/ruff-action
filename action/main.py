@@ -19,7 +19,7 @@ if VERSION != "":
         sys.exit(1)
     version_specifier = f"=={VERSION}"
 
-matcher_path = os.path.join(ACTION_PATH, "matchers", "*.json")
+matcher_path = Path(ACTION_PATH) / "action" / "matchers.json"
 print(f"::add-matcher::{matcher_path}")
 
 req = f"ruff{version_specifier}"
