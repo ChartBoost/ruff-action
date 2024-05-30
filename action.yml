@@ -16,12 +16,22 @@ inputs:
     description: 'The version of ruff to use, e.g. "0.0.259"'
     required: false
     default: ""
+  changed-files:
+    description: 'Whether to only run ruff on changed files. Default: false'
+    required: false
+    default: "false"
 branding:
   color: "black"
   icon: "code"
 runs:
   using: composite
   steps:
+    - name: Get changed files
+      id: changed-files
+      if: ${{ inputs.changed-files == 'true' }}
+      uses: tj-actions/changed-files@v44
+      with:
+        files: '**.py'
     - run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
           python $GITHUB_ACTION_PATH/action/main.py
@@ -33,5 +43,6 @@ runs:
         INPUT_ARGS: ${{ inputs.args }}
         INPUT_SRC: ${{ inputs.src }}
         INPUT_VERSION: ${{ inputs.version }}
+        CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         pythonioencoding: utf-8
       shell: bash

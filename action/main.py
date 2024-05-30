@@ -11,6 +11,7 @@ ACTION_PATH = Path(os.environ["GITHUB_ACTION_PATH"])
 ARGS = os.getenv("INPUT_ARGS", default="")
 SRC = os.getenv("INPUT_SRC", default="")
 VERSION = os.getenv("INPUT_VERSION", default="")
+CHANGED_FILES = os.getenv("CHANGED_FILES", "")
 
 version_specifier = ""
 if VERSION != "":
@@ -21,6 +22,9 @@ if VERSION != "":
 
 req = f"ruff{version_specifier}"
 
-proc = run(["pipx", "run", req, *shlex.split(ARGS), *shlex.split(SRC)])
+# If CHANGED_FILES is not empty, split it into a list; otherwise, use SRC
+files_to_check = shlex.split(CHANGED_FILES or SRC)
+
+proc = run(["pipx", "run", req, *shlex.split(ARGS), *files_to_check])
 
 sys.exit(proc.returncode)

@@ -52,3 +52,10 @@ See [Configuring Ruff](https://github.com/astral-sh/ruff/blob/main/docs/configur
   with:
     args: 'format --check'
 ```
+
+### Only run ruff on changed files
+```yaml
+- uses: chartboost/ruff-action@v1
+  with:
+    changed-files: 'true'
+```
