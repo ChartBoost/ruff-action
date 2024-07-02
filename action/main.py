@@ -28,7 +28,7 @@ files_to_check = shlex.split(CHANGED_FILES or SRC)
 
 # If IS_CHANGED_FILES_ENABLED is true and CHANGED_FILES was empty, there were no files to check
 # Short circuit to prevent ruff from running on all files
-if IS_CHANGED_FILES_ENABLED is "true" and not CHANGED_FILES:
+if IS_CHANGED_FILES_ENABLED == "true" and not CHANGED_FILES:
     sys.exit(0)
     
 proc = run(["pipx", "run", req, *shlex.split(ARGS), *files_to_check])
