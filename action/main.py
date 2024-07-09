@@ -25,6 +25,6 @@ req = f"ruff{version_specifier}"
 # If CHANGED_FILES is not empty, split it into a list; otherwise, use SRC
 files_to_check = shlex.split(CHANGED_FILES or SRC)
 
-proc = run(["pipx", "run", req, *shlex.split(ARGS), *files_to_check])
+proc = run(["pipx", "run", req, "check", *shlex.split(ARGS), *files_to_check])
 
 sys.exit(proc.returncode)
