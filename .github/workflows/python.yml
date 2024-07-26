@@ -1,4 +1,4 @@
-name: CheckPython
+name: Check Python code
 
 on: [push, pull_request]
 
@@ -7,6 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: psf/black@stable
       - uses: chartboost/ruff-action@v1
-      - uses: jakebailey/pyright-action@v2

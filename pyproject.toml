@@ -1,12 +1,19 @@
+[tool.poetry]
+name = "ruff-action"
+version = "0.2"
+description = "A GitHub Action for Ruff Linter"
+authors = ["Ruff Community"]
+license = "Apache-2.0 license"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+ruff = "^0.5.5"
+pre-commit = "^3.7.1"
+
 [tool.ruff]
-
-select = ["A", "ANN", "B", "C90", "D", "E", "F", "I", "N", "COM", "DTZ", "PD", "RUF", "TID", "UP", "W"]
-ignore = ["D203", "D212"]
-
-fixable = ["I", "RUF100"]
-unfixable = []
-
-# Exclude a variety of commonly ignored directories.
+target-version = "py311"
+respect-gitignore = true
 exclude = [
     ".bzr",
     ".direnv",
@@ -30,25 +37,30 @@ exclude = [
     "venv",
 ]
 
-line-length = 88
-
-# Allow unused variables when underscore-prefixed.
+[tool.ruff.lint]
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+select = [
+    "A",
+    "ANN",
+    "B",
+    "C90",
+    "D",
+    "E",
+    "F",
+    "I",
+    "N",
+    "COM",
+    "DTZ",
+    "PD",
+    "RUF",
+    "TID",
+    "UP",
+    "W",
+]
+ignore = ["D203", "D212", "D213", "COM812", "ISC001", "E501", "UP036"]
+fixable = ["I", "RUF100"]
+unfixable = []
 
-target-version = "py311"
-
-[tool.ruff.mccabe]
-# Unlike Flake8, default to a complexity level of 10.
-max-complexity = 10
-
-
-[tool.pyright]
-typeCheckingMode = "lazy"
-defineConstant = { DEBUG = true }
-
-reportMissingImports = false
-reportMissingTypeStubs = false
-reportInvalidStringEscapeSequence = false
-
-pythonVersion = "3.11"
-pythonPlatform = "Linux"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,5 +1,5 @@
 name: "Ruff GH Action"
-description: "A GH Action of Ruff, the extremely fast Python linter."
+description: "A GitHub Action of Ruff, an extremely fast Python linter."
 author: "The Ruff Community"
 inputs:
   args:
@@ -13,11 +13,11 @@ inputs:
     required: false
     default: "."
   version:
-    description: 'The version of ruff to use, e.g. "0.0.259"'
+    description: 'The version of ruff to use, e.g. "0.5.0"'
     required: false
     default: ""
   changed-files:
-    description: 'Whether to only run ruff on changed files. Default: false'
+    description: "Whether to only run ruff on changed files. Default: false"
     required: false
     default: "false"
 branding:
@@ -31,7 +31,7 @@ runs:
       if: ${{ inputs.changed-files == 'true' }}
       uses: tj-actions/changed-files@v44
       with:
-        files: '**.py'
+        files: "**.py"
     - run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
           python $GITHUB_ACTION_PATH/action/main.py
@@ -43,6 +43,7 @@ runs:
         INPUT_ARGS: ${{ inputs.args }}
         INPUT_SRC: ${{ inputs.src }}
         INPUT_VERSION: ${{ inputs.version }}
+        CHANGED_FILES_ENABLED: ${{ inputs.changed-files }}
         CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         pythonioencoding: utf-8
       shell: bash
