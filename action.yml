@@ -32,12 +32,7 @@ runs:
       uses: tj-actions/changed-files@v44
       with:
         files: "**.py"
-    - run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          python $GITHUB_ACTION_PATH/action/main.py
-        else
-          python3 $GITHUB_ACTION_PATH/action/main.py
-        fi
+    - run: python $GITHUB_ACTION_PATH/action/main.py
       env:
         RUFF_OUTPUT_FORMAT: github
         INPUT_ARGS: ${{ inputs.args }}
