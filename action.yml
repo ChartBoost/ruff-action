@@ -1,6 +1,7 @@
-name: "Ruff GH Action"
+name: "Ruff GitHub Action"
 description: "A GitHub Action of Ruff, an extremely fast Python linter."
 author: "The Ruff Community"
+
 inputs:
   args:
     description:
@@ -8,21 +9,26 @@ inputs:
       Default: 'check'"
     required: false
     default: "check"
+
   src:
     description: "Source to run ruff. Default: '.'"
     required: false
     default: "."
+
   version:
     description: 'The version of ruff to use, e.g. "0.5.0"'
     required: false
     default: ""
+
   changed-files:
     description: "Whether to only run ruff on changed files. Default: false"
     required: false
     default: "false"
+
 branding:
   color: "black"
   icon: "code"
+
 runs:
   using: composite
   steps:
@@ -32,7 +38,20 @@ runs:
       uses: tj-actions/changed-files@v44
       with:
         files: "**.py"
-    - run: python $GITHUB_ACTION_PATH/action/main.py
+    - run:
+        set +e
+
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          runner="python"
+        else
+          runner="python3"
+        fi
+
+        out=$(${runner} $GITHUB_ACTION_PATH/action/main.py)
+        exit_code=$?
+        echo "${out}"
+
+        exit ${exit_code}
       env:
         RUFF_OUTPUT_FORMAT: github
         INPUT_ARGS: ${{ inputs.args }}
