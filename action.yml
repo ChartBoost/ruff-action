@@ -53,18 +53,18 @@ runs:
       uses: tj-actions/changed-files@v44
       with:
         files: "**.py"
-    - run: set +e
+    - run: |
+        set +e
 
         if [ "$RUNNER_OS" == "Windows" ]; then
-        runner="python"
+          runner="python"
         else
-        runner="python3"
+          runner="python3"
         fi
 
         out=$(${runner} $GITHUB_ACTION_PATH/action/main.py)
         exit_code=$?
         echo "${out}"
-
         exit ${exit_code}
       env:
         RUFF_OUTPUT_FORMAT: github
