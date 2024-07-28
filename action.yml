@@ -54,15 +54,11 @@ runs:
       with:
         files: "**.py"
     - run: |
+        apt install python-is-python3
+      shell: bash
+    - run: |
         set +e
-
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          runner="python"
-        else
-          runner="python3"
-        fi
-
-        out=$(${runner} $GITHUB_ACTION_PATH/action/main.py)
+        out=$(python $GITHUB_ACTION_PATH/action/main.py)
         exit_code=$?
         echo "${out}"
         exit ${exit_code}
