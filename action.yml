@@ -25,6 +25,21 @@ inputs:
     required: false
     default: "false"
 
+  config_path:
+    description: "Path to a configuration file (pyproject.toml or ruff.toml). Default: 'root/'"
+    required: false
+    default: "/"
+
+  isolated:
+    description: "Ignore all configuration files. Default: false"
+    required: false
+    default: "false"
+
+  use_pyproject:
+    description: "Whether to use pyproject.toml to configure ruff. Default: false"
+    required: false
+    default: "false"
+
 branding:
   color: "black"
   icon: "code"
@@ -38,13 +53,12 @@ runs:
       uses: tj-actions/changed-files@v44
       with:
         files: "**.py"
-    - run:
-        set +e
+    - run: set +e
 
         if [ "$RUNNER_OS" == "Windows" ]; then
-          runner="python"
+        runner="python"
         else
-          runner="python3"
+        runner="python3"
         fi
 
         out=$(${runner} $GITHUB_ACTION_PATH/action/main.py)
@@ -59,5 +73,8 @@ runs:
         INPUT_VERSION: ${{ inputs.version }}
         CHANGED_FILES_ENABLED: ${{ inputs.changed-files }}
         CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        CONFIG_PATH: ${{ inputs.config_path }}
+        USE_PYPROJECT: ${{ inputs.use_pyproject }}
+        USE_ISOLATED: ${{ inputs.isolated }}
         pythonioencoding: utf-8
       shell: bash

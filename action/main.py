@@ -12,12 +12,16 @@ ARGS = os.getenv("INPUT_ARGS", default="")
 SRC = os.getenv("INPUT_SRC", default="")
 
 VERSION = os.getenv("INPUT_VERSION", default="")
-USE_PYPROJECT = os.getenv("INPUT_USE_PYPROJECT") == "true"
 RUFF_VERSION_RE = re.compile(r"^ruff([^A-Z0-9._-]+.*)$", re.IGNORECASE)
 
 # Changed files support
 CHANGED_FILES = os.getenv("CHANGED_FILES", "")
 CHANGED_FILES_ENABLED = os.getenv("CHANGED_FILES_ENABLED", default="false") == "true"
+
+# Configurations
+CONFIG_PATH = os.getenv("CONFIG_PATH", default="/")
+USE_ISOLATED = os.getenv("USE_ISOLATED", default="false") == "true"
+USE_PYPROJECT = os.getenv("INPUT_USE_PYPROJECT") == "true"
 
 
 def determine_version() -> str:
@@ -29,7 +33,8 @@ def determine_version() -> str:
     """
     if USE_PYPROJECT and VERSION:
         print(
-            "::error::'with.version' and 'with.use_pyproject' inputs are mutually exclusive.",
+            "::error::'with.version' and 'with.use_pyproject' inputs are mutually "
+            "exclusive.",
             file=sys.stderr,
             flush=True,
         )
@@ -46,7 +51,7 @@ def determine_version() -> str:
 
 
 def read_version_from_pyproject() -> str:
-    """Read the version specifier from the pyproject.toml file."""
+    """Read the version specifier from the `pyproject.toml` file."""
     if sys.version_info < (3, 7):
         print(
             "::error::'with.use_pyproject' input requires Python 3.7 or later.",
@@ -102,7 +107,8 @@ def find_version_in_array(array: object) -> str | None:
             item = item.split(";")[0]
             if item == "ruff":
                 print(
-                    "::error::Version specifier missing for 'ruff' dependency in pyproject.toml.",
+                    "::error::Version specifier missing for 'ruff' dependency in "
+                    "pyproject.toml.",
                     file=sys.stderr,
                     flush=True,
                 )
@@ -115,6 +121,24 @@ def find_version_in_array(array: object) -> str | None:
     return None
 
 
+def get_config_path(path: str = CONFIG_PATH) -> str:
+    """
+    Search for `pyproject.toml` or `ruff.toml` in the specified PATH.
+
+    If the PATH is a file, return the PATH. Otherwise, search for the config files.
+    """
+
+    if os.path.isfile(path):
+        return path
+
+    for config_file in ["ruff.toml", "pyproject.toml"]:
+        config_path = os.path.join(path, config_file)
+        if os.path.isfile(config_path):
+            return config_path
+    return None
+
+
+# Check if the 'changed_files' input is enabled but no files were provided
 if CHANGED_FILES_ENABLED and not CHANGED_FILES:
     print(
         "::error::'changed_files' input is enabled but no files were provided.",
@@ -123,16 +147,50 @@ if CHANGED_FILES_ENABLED and not CHANGED_FILES:
     )
     sys.exit(0)
 
+# Get the config path or isolated flag
+config_args = []
+config_path = get_config_path()
+
+if USE_ISOLATED:
+    config_args.append("--isolated")
+
+if config_path is not None and not USE_ISOLATED:
+    config_args.extend(["--config", config_path])
+
+# Get the version specifier
 version_specifier = determine_version()
-exc = subprocess.run(
-    [
-        sys.executable,
-        "run",
-        "check",
-        f"ruff{version_specifier}",
-        *shlex.split(ARGS),
-        *shlex.split(CHANGED_FILES or SRC),
-    ],
+req = f"ruff{version_specifier}"
+
+# Install ruff
+print(f"Installing {req}...", flush=True)
+pip_proc = subprocess.run(
+    args=["python", "-m", "pip", "install", req],
+    stdout=subprocess.PIPE,
+    stderr=subprocess.STDOUT,
+    cwd=ACTION_PATH,
+    encoding="utf-8",
     check=False,
 )
-sys.exit(exc.returncode)
+if pip_proc.returncode:
+    print(pip_proc.stdout)
+    print("::error::Failed to install 'ruff'.", file=sys.stderr, flush=True)
+    sys.exit(pip_proc.returncode)
+
+# Run ruff with the provided arguments
+print(f"Running ruff with arguments: {ARGS}", flush=True)
+proc = subprocess.run(
+    args=[
+        "ruff",
+        *shlex.split(ARGS),
+        *shlex.split(CHANGED_FILES or SRC),
+        *config_args,
+    ],
+    stdout=subprocess.PIPE,
+    stderr=subprocess.STDOUT,
+    cwd=ACTION_PATH,
+    encoding="utf-8",
+    check=False,
+)
+
+print(proc.stdout)
+sys.exit(proc.returncode)
