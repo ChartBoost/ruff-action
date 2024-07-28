@@ -1,20 +1,49 @@
-# ruff-action
-A GitHub Action for Ruff
+# Ruff GitHub Action
 
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![image](https://img.shields.io/pypi/v/ruff.svg)](https://pypi.python.org/pypi/ruff)
+[![image](https://img.shields.io/pypi/l/ruff.svg)](https://github.com/ilyvsc/ruff-action/blob/main/LICENSE)
+[![image](https://img.shields.io/pypi/pyversions/ruff.svg)](https://pypi.python.org/pypi/ruff)
+[![Actions status](https://github.com/ilyvsc/ruff-action/workflows/CI/badge.svg)](https://github.com/ilyvsc/ruff-action/actions)
 
-Ruff can now be used as a [GitHub Action](https://github.com/features/actions).
+## Overview
 
-This action is commonly used as a pass/fail test to ensure your repository stays clean, abiding the [Rules](https://docs.astral.sh/ruff/rules/) specified in your configuration.  Though it runs `ruff`, the action can do anything `ruff` can (ex, fix).
+The Ruff GitHub Action enforces code cleanliness by running Ruff against your repository. This ensures adherence to the [Rules](https://docs.astral.sh/ruff/rules/) defined in your configuration file. Whether you need Ruff to lint, fix, or perform any of its robust features, this action has you covered.
 
 ## Compatibility
-This action is known to support all GitHub-hosted runner OSes.  It likely can run on self-hosted runners, but might need specific dependencies. Only published versions of Ruff are supported (i.e. whatever is available on PyPI).
 
-## Basic Usage
-Create a file (ex: `.github/workflows/ruff.yml`) inside your repository with:
+This action supports all GitHub-hosted runner operating systems. While it likely runs on self-hosted runners, be aware that additional dependencies may be required. Note that only published versions of Ruff from PyPI are supported.
+
+## Usage
+
+### Pre-requisites
+
+Create a workflow `.yml` file in your repository's `.github/workflows` directory. An [example workflow](#example-workflows) is available below. For more information, see the GitHub Help Documentation for [Creating a workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file).
+
+### Inputs
+
+> [!WARNING]
+> Note that `isolated` and `config_path`, as well as `version` and `use_pyproject`, are mutually exclusive and cannot be configured simultaneously.
+
+- `args`: Arguments passed to Ruff. Use `ruff --help` to see available options. Default: `check`.
+- `src`: Source to run Ruff. Default: `'.'`.
+- `version`: The version of Ruff to use, e.g. "0.5.0". Default: `""`.
+- `use_pyproject`: Whether to use pyproject.toml to configure Ruff. Default: `false`.
+- `changed-files`: Whether to only run Ruff on changed files. Default: `false`.
+- `config_path`: Path to a configuration file (`pyproject.toml` or `ruff.toml`). Default: `/`.
+- `isolated`: Ignore all configuration files. Default: `false`.
+
+### Example Workflows
+
+To integrate Ruff into your GitHub workflow, create a workflow configuration file (e.g., `.github/workflows/ruff.yml`) in your repository. This file will define the steps for running Ruff every time a push or pull request is made.
+
+#### Basic Workflow
 
 ```yaml
 name: Ruff
+
 on: [push, pull_request]
+
 jobs:
   ruff:
     runs-on: ubuntu-latest
@@ -23,39 +52,63 @@ jobs:
       - uses: chartboost/ruff-action@v1
 ```
 
-## Advanced Usage
-The Ruff action can be customized via optional configuration parameters passed to Ruff (using `with:`):
+#### Run `ruff` with specific arguments and source path
 
-- version: Must be a Ruff release available on PyPI. By default, latest release of Ruff. You can pin a version, or use any valid version specifier.
-- args: You can specify the arguments to pass to the ruff command. By default, it's `check`.
-- src: default, '.'
-
-See [Configuring Ruff](https://github.com/astral-sh/ruff/blob/main/docs/configuration.md) for details
-
-### Use a different ruff version
 ```yaml
-- uses: chartboost/ruff-action@v1
-  with:
-    version: 0.2.2
+name: Ruff
+
+on: [push, pull_request]
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chartboost/ruff-action@v1
+        with:
+          args: "--select I --fix"
+          src: "src/"
 ```
 
-### Specify a different source directory
+#### Run `ruff` for changed files only
+
 ```yaml
-- uses: chartboost/ruff-action@v1
-  with:
-    src: './src'
+name: Ruff
+
+on: [push, pull_request]
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chartboost/ruff-action@v1
+        with:
+          changed-files: "true"
 ```
 
-### Use `ruff format`
+### Run `ruff` on `--isolated` mode
+
 ```yaml
-- uses: chartboost/ruff-action@v1
-  with:
-    args: 'format --check'
+name: Ruff
+
+on: [push, pull_request]
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chartboost/ruff-action@v1
+        with:
+          changed-files: "true"
+          isolated: "true"
 ```
 
-### Only run ruff on changed files
-```yaml
-- uses: chartboost/ruff-action@v1
-  with:
-    changed-files: 'true'
-```
+## Contributing
+
+We would love for you to contribute to. Pull requests are welcome! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
+
+## License
+
+The scripts and documentation in this project are released under the [MIT License](LICENSE)
