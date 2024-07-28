@@ -43,11 +43,10 @@ def determine_version() -> str:
     if USE_PYPROJECT:
         return read_version_from_pyproject()
 
-    elif VERSION and VERSION[0] in "0123456789":
+    if VERSION and VERSION[0].isdigit():
         return f"=={VERSION}"
 
-    else:
-        return VERSION
+    return VERSION
 
 
 def read_version_from_pyproject() -> str:
@@ -127,14 +126,13 @@ def get_config_path(path: str = CONFIG_PATH) -> str:
 
     If the PATH is a file, return the PATH. Otherwise, search for the config files.
     """
-
-    if os.path.isfile(path):
+    if Path(path).is_file():
         return path
 
     for config_file in ["ruff.toml", "pyproject.toml"]:
-        config_path = os.path.join(path, config_file)
-        if os.path.isfile(config_path):
-            return config_path
+        config_path = Path(path) / config_file
+        if config_path.is_file():
+            return str(config_path)
     return None
 
 
