@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ruff-action"
+name = "action"
 version = "0.2"
 description = "A GitHub Action for Ruff Linter"
 authors = ["Ruff Community"]
@@ -40,26 +40,79 @@ exclude = [
 [tool.ruff.lint]
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 select = [
-    "A",
-    "ANN",
-    "B",
-    "C90",
-    "D",
-    "E",
-    "F",
-    "I",
-    "N",
-    "COM",
-    "DTZ",
-    "PD",
-    "RUF",
-    "TID",
-    "UP",
-    "W",
+    # Find the whole list at:
+    # https://docs.astral.sh/ruff/rules/
+
+    # General Linting and Style
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort (import sorting)
+    "D",   # pydocstyle (docstring style checker)
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "C90", # mccabe (complexity checker)
+
+    # Flake8 Plugins and Extensions
+    "ANN",   # flake8-annotations
+    "ASYNC", # flake8-async
+    "B",     # flake8-bugbear
+    "A",     # flake8-builtins
+    "COM",   # flake8-commas
+    "DTZ",   # flake8-datetimez
+    "T10",   # flake8-debugger
+    "DJ",    # flake8-django
+    "EM",    # flake8-errmsg
+    "EXE",   # flake8-executable
+    "FA",    # flake8-future-annotations
+    "ISC",   # flake8-implicit-str-concat
+    "ICN",   # flake8-import-conventions
+    "LOG",   # flake8-logging
+    "G",     # flake8-logging-format
+    "INP",   # flake8-no-pep420
+    "PIE",   # flake8-pie
+    "PYI",   # flake8-pyi
+    "PT",    # flake8-pytest-style
+    "Q",     # flake8-quotes
+    "RSE",   # flake8-raise
+    "RET",   # flake8-return
+    "SLF",   # flake8-self
+    "SLOT",  # flake8-slots
+    "SIM",   # flake8-simplify
+    "TID",   # flake8-tidy-imports
+    "TCH",   # flake8-type-checking
+    "INT",   # flake8-gettext
+    "ARG",   # flake8-unused-arguments
+    "PTH",   # flake8-use-pathlib
+    "TD",    # flake8-todos
+    "FIX",   # flake8-fixme
+    "ERA",   # eradicate
+
+    # Third-Party Tools
+    "RUF", # Ruff-specific rules
 ]
-ignore = ["D203", "D212", "D213", "COM812", "ISC001", "E501", "UP036"]
-fixable = ["I", "RUF100"]
+ignore = [
+    # ignorable rules
+    "COM812", # Missing trailing comma
+    "D203",   # One blank line required before class docstring (found 0)
+    "D212",   # Multi-line docstring summary should start at the first line
+    "D213",   # Multi-line docstring summary should start at the second line
+    "E501",   # Line too long (X > 79 characters)
+    "ISC001", # Import aliases should not be a single letter
+    "UP036",  # Use capitalized version of 'True', 'False', and 'None'
+]
+fixable = [
+    # autofixable rules
+    "I",      # isort rules
+    "RUF100", # Unused noqa directive
+]
 unfixable = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+skip-magic-trailing-comma = false
 
 [build-system]
 requires = ["poetry-core"]
