@@ -1,12 +1,19 @@
+[tool.poetry]
+name = "action"
+version = "0.2"
+description = "A GitHub Action for Ruff Linter"
+authors = ["Ruff Community"]
+license = "Apache-2.0 license"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+ruff = "^0.5.5"
+pre-commit = "^3.7.1"
+
 [tool.ruff]
-
-select = ["A", "ANN", "B", "C90", "D", "E", "F", "I", "N", "COM", "DTZ", "PD", "RUF", "TID", "UP", "W"]
-ignore = ["D203", "D212"]
-
-fixable = ["I", "RUF100"]
-unfixable = []
-
-# Exclude a variety of commonly ignored directories.
+target-version = "py311"
+respect-gitignore = true
 exclude = [
     ".bzr",
     ".direnv",
@@ -30,25 +37,92 @@ exclude = [
     "venv",
 ]
 
-line-length = 88
-
-# Allow unused variables when underscore-prefixed.
+[tool.ruff.lint]
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+select = [
+    # Find the whole list at:
+    # https://docs.astral.sh/ruff/rules/
 
-target-version = "py311"
+    # General Linting and Style
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort (import sorting)
+    "D",   # pydocstyle (docstring style checker)
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "C90", # mccabe (complexity checker)
 
-[tool.ruff.mccabe]
-# Unlike Flake8, default to a complexity level of 10.
-max-complexity = 10
+    # Flake8 Plugins and Extensions
+    "ANN",   # flake8-annotations
+    "ASYNC", # flake8-async
+    "B",     # flake8-bugbear
+    "A",     # flake8-builtins
+    "COM",   # flake8-commas
+    "DTZ",   # flake8-datetimez
+    "T10",   # flake8-debugger
+    "DJ",    # flake8-django
+    "EM",    # flake8-errmsg
+    "EXE",   # flake8-executable
+    "FA",    # flake8-future-annotations
+    "ISC",   # flake8-implicit-str-concat
+    "ICN",   # flake8-import-conventions
+    "LOG",   # flake8-logging
+    "G",     # flake8-logging-format
+    "INP",   # flake8-no-pep420
+    "PIE",   # flake8-pie
+    "PYI",   # flake8-pyi
+    "PT",    # flake8-pytest-style
+    "Q",     # flake8-quotes
+    "RSE",   # flake8-raise
+    "RET",   # flake8-return
+    "SLF",   # flake8-self
+    "SLOT",  # flake8-slots
+    "SIM",   # flake8-simplify
+    "TID",   # flake8-tidy-imports
+    "TCH",   # flake8-type-checking
+    "INT",   # flake8-gettext
+    "ARG",   # flake8-unused-arguments
+    "PTH",   # flake8-use-pathlib
+    "TD",    # flake8-todos
+    "FIX",   # flake8-fixme
+    "ERA",   # eradicate
 
+    # Third-Party Tools
+    "RUF", # Ruff-specific rules
+]
+ignore = [
+    # ignorable rules
+    "COM812", # Missing trailing comma
+    "D203",   # One blank line required before class docstring (found 0)
+    "D212",   # Multi-line docstring summary should start at the first line
+    "D213",   # Multi-line docstring summary should start at the second line
+    "E501",   # Line too long (X > 79 characters)
+    "ISC001", # Import aliases should not be a single letter
+    "UP036",  # Use capitalized version of 'True', 'False', and 'None'
+]
+fixable = [
+    # autofixable rules
+    "I",      # isort rules
+    "RUF100", # Unused noqa directive
+]
+unfixable = []
 
-[tool.pyright]
-typeCheckingMode = "lazy"
-defineConstant = { DEBUG = true }
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = [
+    "D104", # Missing docstring in public package
+    "E402", # Module level import not at top of file
+    "F401", # Module imported but unused
+    "F403", # 'from module import *' used; unable to detect undefined names
+    "F811", # Redefinition of unused name from line N
+]
 
-reportMissingImports = false
-reportMissingTypeStubs = false
-reportInvalidStringEscapeSequence = false
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+skip-magic-trailing-comma = false
 
-pythonVersion = "3.11"
-pythonPlatform = "Linux"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

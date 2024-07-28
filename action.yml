@@ -1,6 +1,7 @@
-name: "Ruff GH Action"
-description: "A GH Action of Ruff, the extremely fast Python linter."
+name: "Ruff GitHub Action"
+description: "A GitHub Action of Ruff, an extremely fast Python linter."
 author: "The Ruff Community"
+
 inputs:
   args:
     description:
@@ -8,21 +9,41 @@ inputs:
       Default: 'check'"
     required: false
     default: "check"
+
   src:
     description: "Source to run ruff. Default: '.'"
     required: false
     default: "."
+
   version:
-    description: 'The version of ruff to use, e.g. "0.0.259"'
+    description: 'The version of ruff to use, e.g. "0.5.0"'
     required: false
     default: ""
+
   changed-files:
-    description: 'Whether to only run ruff on changed files. Default: false'
+    description: "Whether to only run ruff on changed files. Default: false"
     required: false
     default: "false"
+
+  config_path:
+    description: "Path to a configuration file (pyproject.toml or ruff.toml). Default: 'root/'"
+    required: false
+    default: "/"
+
+  isolated:
+    description: "Ignore all configuration files. Default: false"
+    required: false
+    default: "false"
+
+  use_pyproject:
+    description: "Whether to use pyproject.toml to configure ruff. Default: false"
+    required: false
+    default: "false"
+
 branding:
   color: "black"
   icon: "code"
+
 runs:
   using: composite
   steps:
@@ -31,18 +52,29 @@ runs:
       if: ${{ inputs.changed-files == 'true' }}
       uses: tj-actions/changed-files@v44
       with:
-        files: '**.py'
-    - run: |
+        files: "**.py"
+    - run: set +e
+
         if [ "$RUNNER_OS" == "Windows" ]; then
-          python $GITHUB_ACTION_PATH/action/main.py
+        runner="python"
         else
-          python3 $GITHUB_ACTION_PATH/action/main.py
+        runner="python3"
         fi
+
+        out=$(${runner} $GITHUB_ACTION_PATH/action/main.py)
+        exit_code=$?
+        echo "${out}"
+
+        exit ${exit_code}
       env:
         RUFF_OUTPUT_FORMAT: github
         INPUT_ARGS: ${{ inputs.args }}
         INPUT_SRC: ${{ inputs.src }}
         INPUT_VERSION: ${{ inputs.version }}
+        CHANGED_FILES_ENABLED: ${{ inputs.changed-files }}
         CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        CONFIG_PATH: ${{ inputs.config_path }}
+        USE_PYPROJECT: ${{ inputs.use_pyproject }}
+        USE_ISOLATED: ${{ inputs.isolated }}
         pythonioencoding: utf-8
       shell: bash
