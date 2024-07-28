@@ -33,4 +33,5 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Linting
-        uses: ilyvsc/ruff-action@v0.1-beta
+        run: |
+          pre-commit run --all-files
