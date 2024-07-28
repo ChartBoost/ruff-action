@@ -108,6 +108,15 @@ fixable = [
 ]
 unfixable = []
 
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = [
+    "D104", # Missing docstring in public package
+    "E402", # Module level import not at top of file
+    "F401", # Module imported but unused
+    "F403", # 'from module import *' used; unable to detect undefined names
+    "F811", # Redefinition of unused name from line N
+]
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
