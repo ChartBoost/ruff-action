@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: psf/black@stable
       - uses: chartboost/ruff-action@v1
+        with:
+          args: 'check'
+      - uses: chartboost/ruff-action@v1
+        with:
+          args: 'format'
       - uses: jakebailey/pyright-action@v2
