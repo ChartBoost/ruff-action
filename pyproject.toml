@@ -1,13 +1,13 @@
 [tool.ruff]
 
-select = ["A", "ANN", "B", "C90", "D", "E", "F", "I", "N", "COM", "DTZ", "PD", "RUF", "TID", "UP", "W"]
-ignore = ["D203", "D212"]
+lint.select = ["A", "ANN", "B", "C90", "D", "E", "F", "I", "N", "COM", "DTZ", "PD", "RUF", "TID", "UP", "W"]
+lint.ignore = ["D203", "D212"]
 
-fixable = ["I", "RUF100"]
-unfixable = []
+lint.fixable = ["I", "RUF100"]
+lint.unfixable = []
 
 # Exclude a variety of commonly ignored directories.
-exclude = [
+lint.exclude = [
     ".bzr",
     ".direnv",
     ".eggs",
@@ -33,11 +33,11 @@ exclude = [
 line-length = 88
 
 # Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 target-version = "py311"
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 # Unlike Flake8, default to a complexity level of 10.
 max-complexity = 10
 
