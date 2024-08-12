@@ -20,7 +20,7 @@ if VERSION != "":
         sys.exit(1)
     version_specifier = f"=={VERSION}"
 
-req = f"ruff{version_specifier}"
+req = f"ruff{version_specifier} check"
 
 # If CHANGED_FILES is not empty, split it into a list; otherwise, use SRC
 files_to_check = shlex.split(CHANGED_FILES or SRC)
