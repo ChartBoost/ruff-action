@@ -1,5 +1,5 @@
 > [!WARNING]  
-> This repository is no longer actively maintained. It is strongly suggested that you use the [officially-supported ruff action from Astral](https://github.com/astral-sh/ruff-action).
+> This repository is no longer actively maintained. It is strongly suggested that you use the [officially-supported Ruff action from Astral](https://github.com/astral-sh/ruff-action).
 
 
 # ruff-action
